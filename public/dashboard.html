@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>لوحة التحكم | NEXORA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark en">N</div>
+      <div class="logo-text en">NEXORA<span>.</span></div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="#overview" data-view="overview" class="active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        نظرة عامة
+      </a></li>
+      <li><a href="#products" data-view="products">
+        <svg viewBox="0 0 24 24"><path d="M20 7 12 3 4 7l8 4 8-4Z"/><path d="M4 7v10l8 4 8-4V7"/><path d="M12 11v10"/></svg>
+        المنتجات
+      </a></li>
+      <li><a href="#orders" data-view="orders">
+        <svg viewBox="0 0 24 24"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
+        الطلبات
+      </a></li>
+      <li><a href="#customers" data-view="customers">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        العملاء
+      </a></li>
+      <li><a href="#activity" data-view="activity">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        سجل الأتمتة
+      </a></li>
+    </ul>
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <div class="user-avatar en" id="user-avatar">N</div>
+        <div>
+          <div id="user-name" style="font-weight:600;">—</div>
+          <div id="user-email" style="color:var(--text-dim); font-size:11.5px;" class="en">—</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logout-btn">تسجيل الخروج</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <div>
+          <div class="page-title" id="page-title">نظرة عامة</div>
+          <div class="page-sub" id="page-sub">ملخص أداء نيكسورا اليوم</div>
+        </div>
+      </div>
+      <div class="topbar-actions" id="topbar-actions"></div>
+    </div>
+
+    <!-- ---------- OVERVIEW ---------- -->
+    <section class="view active" id="view-overview">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">إجمالي المبيعات</div>
+          <div class="kpi-value teal en" id="kpi-sales">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">عدد الطلبات</div>
+          <div class="kpi-value en" id="kpi-orders">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">عدد العملاء</div>
+          <div class="kpi-value en" id="kpi-customers">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">تنبيهات مخزون منخفض</div>
+          <div class="kpi-value danger en" id="kpi-lowstock">—</div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>المبيعات خلال آخر 14 يومًا</h3>
+          <div class="bar-chart" id="sales-chart"></div>
+        </div>
+        <div class="panel">
+          <h3>المبيعات حسب الفئة</h3>
+          <div id="category-breakdown"></div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel" style="grid-column:1/-1;">
+          <h3>أحدث الطلبات</h3>
+          <div class="table-wrap" style="border:none;">
+            <table>
+              <thead><tr><th>رقم الطلب</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th>التاريخ</th></tr></thead>
+              <tbody id="recent-orders-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PRODUCTS ---------- -->
+    <section class="view" id="view-products">
+      <div class="toolbar">
+        <input type="text" id="product-search" placeholder="ابحث بالاسم أو رمز المنتج (SKU)...">
+        <select id="product-category-filter">
+          <option value="">كل الفئات</option>
+          <option value="furniture">أثاث وديكور</option>
+          <option value="electronics">إلكترونيات</option>
+          <option value="accessories">إكسسوارات</option>
+          <option value="exclusive">منتجات حصرية</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th></th></tr></thead>
+          <tbody id="products-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- ORDERS ---------- -->
+    <section class="view" id="view-orders">
+      <div class="toolbar">
+        <select id="order-status-filter">
+          <option value="">كل الحالات</option>
+          <option value="قيد المعالجة">قيد المعالجة</option>
+          <option value="قيد الشحن">قيد الشحن</option>
+          <option value="تم التسليم">تم التسليم</option>
+          <option value="ملغي">ملغي</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>رقم الطلب</th><th>العميل</th><th>عدد المنتجات</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th>التاريخ</th></tr></thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- CUSTOMERS ---------- -->
+    <section class="view" id="view-customers">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>الاسم</th><th>البريد الإلكتروني</th><th>الجوال</th><th>المدينة</th><th>عدد الطلبات</th><th>إجمالي الإنفاق</th></tr></thead>
+          <tbody id="customers-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- ACTIVITY / AUTOMATION LOG ---------- -->
+    <section class="view" id="view-activity">
+      <div class="panel">
+        <h3 style="display:flex; justify-content:space-between; align-items:center;">
+          <span>سجل الأحداث والأتمتة</span>
+        </h3>
+        <div id="activity-feed"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ PRODUCT MODAL ============ -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal">
+    <h3 id="product-modal-title">إضافة منتج جديد</h3>
+    <form id="product-form">
+      <input type="hidden" id="pf-id">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>اسم المنتج</label>
+          <input type="text" id="pf-name" required>
+        </div>
+        <div class="form-group">
+          <label>الفئة</label>
+          <select id="pf-category" required>
+            <option value="furniture">أثاث وديكور</option>
+            <option value="electronics">إلكترونيات</option>
+            <option value="accessories">إكسسوارات</option>
+            <option value="exclusive">منتجات حصرية</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>رمز المنتج (SKU)</label>
+          <input type="text" id="pf-sku">
+        </div>
+        <div class="form-group">
+          <label>السعر (SAR)</label>
+          <input type="number" id="pf-price" min="0" step="1" required>
+        </div>
+        <div class="form-group">
+          <label>السعر قبل الخصم (اختياري)</label>
+          <input type="number" id="pf-oldprice" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label>الكمية بالمخزون</label>
+          <input type="number" id="pf-stock" min="0" step="1" required>
+        </div>
+        <div class="form-group">
+          <label>الحالة</label>
+          <select id="pf-status">
+            <option value="منشور">منشور</option>
+            <option value="مسودة">مسودة</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>الوصف</label>
+          <textarea id="pf-desc" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="pf-cancel">إلغاء</button>
+        <button type="submit" class="btn-primary">حفظ المنتج</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>

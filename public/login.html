@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تسجيل الدخول | لوحة تحكم NEXORA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-mark en">N</div>
+      <div class="logo-text en">NEXORA<span>.</span></div>
+    </div>
+    <div class="login-sub">لوحة التحكم الإدارية — نيكسورا</div>
+
+    <div class="login-error" id="login-error"></div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="email" placeholder="admin@nexora.com" required>
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-primary">تسجيل الدخول</button>
+    </form>
+
+    <div class="login-hint">
+      بيانات دخول تجريبية:<br>
+      <span class="en" style="color:#00C2B2;">admin@nexora.com</span> /
+      <span class="en" style="color:#00C2B2;">Nexora@123</span>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script>
+  // already logged in? skip straight to dashboard
+  if(NexoraAPI.getToken()) location.href = "dashboard.html";
+
+  const form = document.getElementById("login-form");
+  const errBox = document.getElementById("login-error");
+
+  form.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    errBox.classList.remove("show");
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    try{
+      const data = await NexoraAPI.api("/auth/login", { method:"POST", body:{ email, password } });
+      NexoraAPI.setToken(data.token);
+      NexoraAPI.setUser(data.user);
+      location.href = "dashboard.html";
+    }catch(err){
+      errBox.textContent = err.message || "تعذر تسجيل الدخول";
+      errBox.classList.add("show");
+    }
+  });
+</script>
+</body>
+</html>
