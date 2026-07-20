@@ -1,0 +1,20 @@
+{
+  "name": "nexora-dashboard-server",
+  "version": "1.0.0",
+  "description": "NEXORA — لوحة تحكم حقيقية (Express + lowdb) لإدارة المنتجات والطلبات والعملاء",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "seed": "node src/seed.js",
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "lowdb": "^7.0.1"
+  }
+}
