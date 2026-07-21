@@ -1,10 +1,16 @@
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const file = path.join(__dirname, "..", "data", "db.json");
+const dataDir = path.join(__dirname, "..", "data");
+const file = path.join(dataDir, "db.json");
+
+// Make sure the data folder exists (it's not tracked by git since it starts empty,
+// so on a fresh clone/deploy it needs to be created before lowdb can write to it).
+fs.mkdirSync(dataDir, { recursive: true });
 
 const defaultData = {
   users: [],
