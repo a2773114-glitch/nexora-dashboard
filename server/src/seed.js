@@ -31,7 +31,7 @@ const customers = [
 const statuses = ["قيد المعالجة", "قيد الشحن", "تم التسليم", "ملغي"];
 const paymentMethods = ["بطاقة ائتمان", "Apple Pay", "مدى", "STC Pay"];
 
-async function seed(){
+export async function seed(){
   await initDb();
 
   db.data.users = [];
@@ -115,4 +115,8 @@ async function seed(){
   console.log("  بيانات الدخول: admin@nexora.com / Nexora@123");
 }
 
-seed();
+// Only auto-run when this file is executed directly (e.g. `npm run seed`),
+// not when imported as a module (e.g. from index.js's self-healing check).
+if (import.meta.url === `file://${process.argv[1]}`) {
+  seed();
+}
